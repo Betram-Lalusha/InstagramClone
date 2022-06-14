@@ -80,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
                 PostsAdapter postsAdapter = new PostsAdapter(HomeActivity.this, posts);
+                postsAdapter.notifyDataSetChanged();
 
                 rvPosts.setAdapter(postsAdapter);
                 rvPosts.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
