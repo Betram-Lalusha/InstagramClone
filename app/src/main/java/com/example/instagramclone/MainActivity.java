@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appIcon = findViewById(R.id.instaIcon);
+        getSupportActionBar().hide();
         //delay screen so that icon is seen
         new Handler().postDelayed(new Runnable() {
             

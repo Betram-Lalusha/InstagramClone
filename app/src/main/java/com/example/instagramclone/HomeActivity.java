@@ -28,13 +28,18 @@ public class HomeActivity extends AppCompatActivity {
     RecyclerView rvPosts;
     PostsAdapter postsAdapter;
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        rvPosts = findViewById(R.id.rvPosts);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         allPosts = new LinkedList<>();
+        postsAdapter = new PostsAdapter(this, allPosts);
         //System.out.println("here2");
         queryPosts();
         // Setup refresh listener which triggers new data loading
@@ -53,8 +58,42 @@ public class HomeActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        rvPosts = findViewById(R.id.rvPosts);
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi();
+            }
+        };
 
+        rvPosts.addOnScrollListener(scrollListener);
+        rvPosts.setAdapter(postsAdapter);
+        rvPosts.setLayoutManager(linearLayoutManager);
+
+    }
+
+    private void loadNextDataFromApi() {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereLessThan("createdAt", allPosts.get(allPosts.size() - 1).getDate());
+        query.include(Post.USER);
+        query.addDescendingOrder("createdAt");
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                if(e != null) {
+                    Log.i("HOME", "something went wrong obtaining posts " + e);
+                }
+                for(Post post: posts) {
+                    System.out.println("post refresh44 " + post.getCaption());
+                }
+
+                allPosts.addAll(posts);
+                postsAdapter.notifyDataSetChanged();
+            }
+
+        });
     }
 
     @Override
@@ -86,33 +125,35 @@ public class HomeActivity extends AppCompatActivity {
 
     private void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.setLimit(20); //load first 20 posts
+        query.setLimit(2); //load first 20 posts
         query.include(Post.USER);
+        query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
                 if(e != null) {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
-                postsAdapter = new PostsAdapter(HomeActivity.this, posts);
-                postsAdapter.notifyDataSetChanged();
 
-                rvPosts.setAdapter(postsAdapter);
-                rvPosts.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
                 for(Post post: posts) {
                     System.out.println("post " + post.getCaption());
                 }
 
+                // save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
+                postsAdapter.notifyDataSetChanged();
+                System.out.println("allpost " + allPosts.size());
+                scrollListener.resetState();
             }
 
         });
+        System.out.println("allpost2 " + allPosts.size());
     }
 
     public void fetchTimelineAsync() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.setLimit(20); //load first 20 posts
         query.include(Post.USER);
+        query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
