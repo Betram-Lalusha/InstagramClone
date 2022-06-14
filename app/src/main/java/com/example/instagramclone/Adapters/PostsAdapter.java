@@ -65,6 +65,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView timeStamp;
         ImageView postImage;
         TextView ownerOfPost;
         TextView dropDownMenu;
@@ -79,6 +80,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            timeStamp = itemView.findViewById(R.id.createdAt);
             postImage = itemView.findViewById(R.id.postImage);
             ownerOfPost = itemView.findViewById(R.id.ownerOfPost);
             saveButton = itemView.findViewById(R.id.saveButton);
@@ -95,6 +97,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(Post post) {
             //Bitmap takenImage = BitmapFactory.decodeFile(post.getMedia().getAbsolutePath());
             //postImage.setImageBitmap(post.getMedia());
+//            String createdAt = post.getRelativeDate();
+//            if(createdAt.contains("yesterday") || createdAt.contains("tomorrow")) {
+//                timeStamp.setText(post.getRelativeDate());
+//            }
+            timeStamp.setText(post.getTimeAgo(post.getDate().getTime()));
+
             ownerOfPost.setText(post.getParseUser().getUsername());
             userNameAndCaption.setText(post.getParseUser().getUsername() + " " + post.getCaption());
             viewAllCommmentsButton.setText("view all 40 comments");
