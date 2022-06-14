@@ -3,6 +3,7 @@ package com.example.instagramclone;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,20 +26,34 @@ public class HomeActivity extends AppCompatActivity {
 
     List<Post> allPosts;
     RecyclerView rvPosts;
+    PostsAdapter postsAdapter;
+    private SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         allPosts = new LinkedList<>();
-        System.out.println("here2");
+        //System.out.println("here2");
         queryPosts();
-        System.out.println("here3 " + allPosts.size());
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         rvPosts = findViewById(R.id.rvPosts);
-//        PostsAdapter postsAdapter = new PostsAdapter(this, allPosts);
-//
-//        rvPosts.setAdapter(postsAdapter);
-//        rvPosts.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -79,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
                 if(e != null) {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
-                PostsAdapter postsAdapter = new PostsAdapter(HomeActivity.this, posts);
+                postsAdapter = new PostsAdapter(HomeActivity.this, posts);
                 postsAdapter.notifyDataSetChanged();
 
                 rvPosts.setAdapter(postsAdapter);
@@ -93,4 +108,28 @@ public class HomeActivity extends AppCompatActivity {
 
         });
     }
+
+    public void fetchTimelineAsync() {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.setLimit(20); //load first 20 posts
+        query.include(Post.USER);
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                if(e != null) {
+                    Log.i("HOME", "something went wrong obtaining posts " + e);
+                }
+
+                postsAdapter.clear();
+
+                postsAdapter.addAll(posts);
+                postsAdapter.notifyDataSetChanged();
+            }
+
+
+        });
+
+        swipeContainer.setRefreshing(false);
+    }
+
 }
