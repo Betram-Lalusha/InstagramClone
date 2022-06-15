@@ -68,6 +68,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView timeStamp;
         ImageView postImage;
         TextView ownerOfPost;
+        TextView postCaption;
         TextView dropDownMenu;
         ImageButton saveButton;
         ImageButton likeButton;
@@ -82,6 +83,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
             timeStamp = itemView.findViewById(R.id.createdAt);
             postImage = itemView.findViewById(R.id.postImage);
+            postCaption = itemView.findViewById(R.id.postCaption);
             ownerOfPost = itemView.findViewById(R.id.ownerOfPost);
             saveButton = itemView.findViewById(R.id.saveButton);
             likeButton = itemView.findViewById(R.id.likeButton);
@@ -103,8 +105,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //            }
             timeStamp.setText(post.getTimeAgo(post.getDate().getTime()));
 
+            postCaption.setText(post.getCaption());
             ownerOfPost.setText(post.getParseUser().getUsername());
-            userNameAndCaption.setText(post.getParseUser().getUsername() + " " + post.getCaption());
+            userNameAndCaption.setText(post.getParseUser().getUsername());
             viewAllCommmentsButton.setText("view all 40 comments");
 
             ParseFile mediaFile = post.getMedia();
