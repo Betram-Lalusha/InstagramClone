@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,8 @@ public class ProfileFragment extends Fragment {
     TextView mUserName;
     TextView mUserName2;
     ImageView mUserPic;
-    ImageButton mChanePicButton;
+    ProgressBar mProgressBar;
+    ImageButton mChangePicButton;
     protected List<Post> mAllPosts;
     protected RecyclerView mRvPosts;
     private File mPhotoFile;
@@ -82,10 +84,12 @@ public class ProfileFragment extends Fragment {
         mUserPic = view.findViewById(R.id.profilePicture);
         mUserName = view.findViewById(R.id.nameOfUser);
         mUserName2 = view.findViewById(R.id.nameOfUser2);
-        mChanePicButton = view.findViewById(R.id.changePicButton);
+        mChangePicButton = view.findViewById(R.id.changePicButton);
         mSaveNewPicBtn = view.findViewById(R.id.saveNewButton);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+
         mRvPosts = view.findViewById(R.id.userProfileRv);
 
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer2);
@@ -116,7 +120,7 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        mChanePicButton.setOnClickListener(new View.OnClickListener() {
+        mChangePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLaunchCamera(v);
@@ -132,6 +136,7 @@ public class ProfileFragment extends Fragment {
                     return;
                 }
                 upDatePhoto(ParseUser.getCurrentUser(), mPhotoFile);
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
                 mSaveNewPicBtn.setVisibility(View.GONE);
             }
         });
@@ -259,9 +264,11 @@ public class ProfileFragment extends Fragment {
                 }
 
                 Toast.makeText(getContext(), "photo updated!", Toast.LENGTH_SHORT).show();
+                // run a background job and once complete
+                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                //change pic currently on display while it saves in background
+                mUserPic.setImageURI(Uri.parse(mPhotoFile.getPath()));
             }
         });
-        //change pic currently on display while it saves in background
-        mUserPic.setImageURI(Uri.parse(mPhotoFile.getPath()));
     }
 }
