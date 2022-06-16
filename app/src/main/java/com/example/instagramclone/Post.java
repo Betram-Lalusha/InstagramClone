@@ -63,7 +63,7 @@ public class Post extends ParseObject {
 
         long now = currentDate().getTime();
         if (time > now || time <= 0) {
-            return "in the future";
+            return "just now";
         }
 
         final long diff = now - time;

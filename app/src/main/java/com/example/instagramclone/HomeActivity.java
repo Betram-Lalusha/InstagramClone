@@ -19,8 +19,8 @@ import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+    BottomNavigationView mBottomNavigationView;
+    final FragmentManager mFragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class HomeActivity extends AppCompatActivity {
         //hide action bar
         getSupportActionBar().hide();
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+        mBottomNavigationView = findViewById(R.id.bottom_navigation);
+        mBottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
@@ -52,12 +52,12 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new TimeLineFragment();
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+                mFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
                 return true;
             }
         });
 
-        bottomNavigationView.setSelectedItemId(R.id.homeButton);
+        mBottomNavigationView.setSelectedItemId(R.id.homeButton);
     }
 
 

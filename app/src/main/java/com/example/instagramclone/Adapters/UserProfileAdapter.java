@@ -23,40 +23,40 @@ import java.util.List;
 
 public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.ViewHolder> {
 
-    Context context;
-    List<Post> posts;
+    Context mContext;
+    List<Post> mPosts;
     public UserProfileAdapter(Context context, List<Post> posts) {
-        this.posts = posts;
-        this.context = context;
+        this.mPosts = posts;
+        this.mContext = context;
     }
 
     @NonNull
     @Override
     public UserProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.single_picture, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.single_picture, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UserProfileAdapter.ViewHolder holder, int position) {
-        Post post = posts.get(position);
+        Post post = mPosts.get(position);
         holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return mPosts.size();
     }
 
     // Clean all elements of the recycler
     public void clear() {
-        posts.clear();
+        mPosts.clear();
         notifyDataSetChanged();
     }
 
     // Add a list of items -- change to type used
     public void addAll(List<Post> list) {
-        posts.addAll(list);
+        mPosts.addAll(list);
         notifyDataSetChanged();
     }
 

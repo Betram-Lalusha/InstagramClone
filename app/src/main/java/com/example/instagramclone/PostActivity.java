@@ -27,12 +27,12 @@ import java.io.File;
 
 public class PostActivity extends AppCompatActivity {
 
-    TextView caption;
-    Button addPicture;
-    Button submitButton;
-    private File photoFile;
-    ImageView uploadedImage;
-    public String photoFileName = "photo.jpg";
+    TextView mCaption;
+    Button mAddPicture;
+    Button mSubmitButton;
+    private File mPhotoFile;
+    ImageView mUploadedImage;
+    public String mPhotoFileName = "photo.jpg";
     public final String APP_TAG = "InstagramClone";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
 
@@ -41,25 +41,25 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        caption = findViewById(R.id.caption);
-        addPicture = findViewById(R.id.addPicture);
-        submitButton = findViewById(R.id.submitButton);
-        uploadedImage = findViewById(R.id.upLoadedPicture);
+        mCaption = findViewById(R.id.caption);
+        mAddPicture = findViewById(R.id.addPicture);
+        mSubmitButton = findViewById(R.id.submitButton);
+        mUploadedImage = findViewById(R.id.upLoadedPicture);
 
-        addPicture.setOnClickListener(new View.OnClickListener() {
+        mAddPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLaunchCamera(v);
             }
         });
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enteredCaption = caption.getText().toString();
+                String enteredCaption = mCaption.getText().toString();
 
                 //feedback if no photo is taken
-                if(photoFile == null || uploadedImage.getDrawable() == null) {
+                if(mPhotoFile == null || mUploadedImage.getDrawable() == null) {
                     Toast.makeText(PostActivity.this, "no image added", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -68,7 +68,7 @@ public class PostActivity extends AppCompatActivity {
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                savePost(enteredCaption, currentUser, photoFile);
+                savePost(enteredCaption, currentUser, mPhotoFile);
             }
         });
     }
@@ -77,12 +77,12 @@ public class PostActivity extends AppCompatActivity {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        mPhotoFile = getPhotoFileUri(mPhotoFileName);
 
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(PostActivity.this, "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(PostActivity.this, "com.codepath.fileprovider", mPhotoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -117,10 +117,10 @@ public class PostActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Bitmap takenImage = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
-                uploadedImage.setImageBitmap(takenImage);
+                mUploadedImage.setImageBitmap(takenImage);
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -143,9 +143,9 @@ public class PostActivity extends AppCompatActivity {
                     return;
                 }
 
-                caption.setText("");
+                mCaption.setText("");
                 //clear image
-                uploadedImage.setImageResource(0);
+                mUploadedImage.setImageResource(0);
                 Toast.makeText(PostActivity.this, "saved successfully!.", Toast.LENGTH_SHORT).show();
 
             }

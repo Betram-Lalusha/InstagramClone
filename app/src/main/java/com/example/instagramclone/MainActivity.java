@@ -9,13 +9,13 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView appIcon;
+    ImageView mAppIcon;
     private final int DELAY_TIME = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        appIcon = findViewById(R.id.instaIcon);
+        mAppIcon = findViewById(R.id.instaIcon);
         getSupportActionBar().hide();
         //delay screen so that icon is seen
         new Handler().postDelayed(new Runnable() {

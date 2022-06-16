@@ -28,11 +28,11 @@ import java.util.List;
 
 public class TimeLineFragment extends Fragment {
 
-    protected List<Post> allPosts;
-    protected RecyclerView rvPosts;
-    protected PostsAdapter postsAdapter;
-    private SwipeRefreshLayout swipeContainer;
-    protected EndlessRecyclerViewScrollListener scrollListener;
+    protected List<Post> mAllPosts;
+    protected RecyclerView mRvPosts;
+    protected PostsAdapter mPostsAdapter;
+    private SwipeRefreshLayout mSwipeContainer;
+    protected EndlessRecyclerViewScrollListener mScrollListener;
 
 
     public TimeLineFragment() {
@@ -50,28 +50,28 @@ public class TimeLineFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @NonNull Bundle savedInstanceState) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvPosts = view.findViewById(R.id.rvPosts);
+        mRvPosts = view.findViewById(R.id.rvPosts);
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        allPosts = new LinkedList<>();
-        postsAdapter = new PostsAdapter(getContext(), allPosts);
+        mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        mAllPosts = new LinkedList<>();
+        mPostsAdapter = new PostsAdapter(getContext(), mAllPosts);
         //System.out.println("here2");
         queryPosts();
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 fetchTimelineAsync();
             }
         });
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
         // Retain an instance so that you can call `resetState()` for fresh searches
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
@@ -80,15 +80,15 @@ public class TimeLineFragment extends Fragment {
             }
         };
 
-        rvPosts.addOnScrollListener(scrollListener);
-        rvPosts.setAdapter(postsAdapter);
-        rvPosts.setLayoutManager(linearLayoutManager);
+        mRvPosts.addOnScrollListener(mScrollListener);
+        mRvPosts.setAdapter(mPostsAdapter);
+        mRvPosts.setLayoutManager(linearLayoutManager);
 
     }
 
     private void loadNextDataFromApi() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereLessThan("createdAt", allPosts.get(allPosts.size() - 1).getDate());
+        query.whereLessThan("createdAt", mAllPosts.get(mAllPosts.size() - 1).getDate());
         query.include(Post.USER);
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
@@ -97,8 +97,8 @@ public class TimeLineFragment extends Fragment {
                 if(e != null) {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
-                allPosts.addAll(posts);
-                postsAdapter.notifyDataSetChanged();
+                mAllPosts.addAll(posts);
+                mPostsAdapter.notifyDataSetChanged();
             }
 
         });
@@ -117,9 +117,9 @@ public class TimeLineFragment extends Fragment {
                 }
 
                 // save received posts to list and notify adapter of new data
-                allPosts.addAll(posts);
-                postsAdapter.notifyDataSetChanged();
-                scrollListener.resetState();
+                mAllPosts.addAll(posts);
+                mPostsAdapter.notifyDataSetChanged();
+                mScrollListener.resetState();
             }
         });
     }
@@ -135,16 +135,15 @@ public class TimeLineFragment extends Fragment {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
 
-                postsAdapter.clear();
-
-                postsAdapter.addAll(posts);
-                postsAdapter.notifyDataSetChanged();
+                mPostsAdapter.clear();
+                mPostsAdapter.addAll(posts);
+                mPostsAdapter.notifyDataSetChanged();
             }
 
 
         });
 
-        swipeContainer.setRefreshing(false);
+        mSwipeContainer.setRefreshing(false);
     }
 
 }

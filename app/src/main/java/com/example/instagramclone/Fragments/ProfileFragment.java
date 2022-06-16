@@ -33,14 +33,14 @@ import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
-    TextView userName;
-    TextView userName2;
+    TextView mUserName;
+    TextView mUserName2;
     ImageView mUserPic;
-    protected List<Post> allPosts;
-    protected RecyclerView rvPosts;
-    protected UserProfileAdapter userProfileAdapter;
-    private SwipeRefreshLayout swipeContainer;
-    protected EndlessRecyclerViewScrollListener scrollListener;
+    protected List<Post> mAllPosts;
+    protected RecyclerView mRvPosts;
+    protected UserProfileAdapter mUserProfileAdapter;
+    private SwipeRefreshLayout mSwipeContainer;
+    protected EndlessRecyclerViewScrollListener mScrollListener;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -63,32 +63,32 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, @NonNull Bundle savedInstanceState) {
 
         mUserPic = view.findViewById(R.id.profilePicture);
-        userName = view.findViewById(R.id.nameOfUser);
-        userName2 = view.findViewById(R.id.nameOfUser2);
+        mUserName = view.findViewById(R.id.nameOfUser);
+        mUserName2 = view.findViewById(R.id.nameOfUser2);
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        rvPosts = view.findViewById(R.id.userProfileRv);
+        mRvPosts = view.findViewById(R.id.userProfileRv);
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer2);
-        allPosts = new LinkedList<>();
-        userProfileAdapter = new UserProfileAdapter(getContext(), allPosts);
+        mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer2);
+        mAllPosts = new LinkedList<>();
+        mUserProfileAdapter = new UserProfileAdapter(getContext(), mAllPosts);
         //System.out.println("here2");
         queryPosts();
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 fetchTimelineAsync();
             }
         });
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
         // Retain an instance so that you can call `resetState()` for fresh searches
-        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+        mScrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
@@ -97,9 +97,9 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        rvPosts.addOnScrollListener(scrollListener);
-        rvPosts.setAdapter(userProfileAdapter);
-        rvPosts.setLayoutManager(gridLayoutManager);
+        mRvPosts.addOnScrollListener(mScrollListener);
+        mRvPosts.setAdapter(mUserProfileAdapter);
+        mRvPosts.setLayoutManager(gridLayoutManager);
 
         ParseFile userPicture = ParseUser.getCurrentUser().getParseFile("profilePicture");
         Glide.with(getContext()).load(userPicture.getUrl()).into(mUserPic);
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
 
     private void loadNextDataFromApi() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereLessThan("createdAt", allPosts.get(allPosts.size() - 1).getDate());
+        query.whereLessThan("createdAt", mAllPosts.get(mAllPosts.size() - 1).getDate());
         query.include(Post.USER);
         query.whereEqualTo(Post.USER, ParseUser.getCurrentUser());
         query.addDescendingOrder("createdAt");
@@ -118,16 +118,16 @@ public class ProfileFragment extends Fragment {
                 if(e != null) {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
-                allPosts.addAll(posts);
-                userProfileAdapter.notifyDataSetChanged();
+                mAllPosts.addAll(posts);
+                mUserProfileAdapter.notifyDataSetChanged();
             }
 
         });
     }
 
     protected void queryPosts() {
-        userName.setText(ParseUser.getCurrentUser().getUsername());
-        userName2.setText(ParseUser.getCurrentUser().getUsername());
+        mUserName.setText(ParseUser.getCurrentUser().getUsername());
+        mUserName2.setText(ParseUser.getCurrentUser().getUsername());
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.USER);
         query.whereEqualTo(Post.USER, ParseUser.getCurrentUser());
@@ -140,9 +140,9 @@ public class ProfileFragment extends Fragment {
                 }
 
                 // save received posts to list and notify adapter of new data
-                allPosts.addAll(posts);
-                userProfileAdapter.notifyDataSetChanged();
-                scrollListener.resetState();
+                mAllPosts.addAll(posts);
+                mUserProfileAdapter.notifyDataSetChanged();
+                mScrollListener.resetState();
             }
         });
     }
@@ -159,14 +159,14 @@ public class ProfileFragment extends Fragment {
                     Log.i("HOME", "something went wrong obtaining posts " + e);
                 }
 
-                userProfileAdapter.clear();
-                userProfileAdapter.addAll(posts);
-                userProfileAdapter.notifyDataSetChanged();
+                mUserProfileAdapter.clear();
+                mUserProfileAdapter.addAll(posts);
+                mUserProfileAdapter.notifyDataSetChanged();
             }
 
 
         });
 
-        swipeContainer.setRefreshing(false);
+        mSwipeContainer.setRefreshing(false);
     }
 }

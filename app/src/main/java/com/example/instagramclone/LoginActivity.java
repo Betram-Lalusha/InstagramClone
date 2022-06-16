@@ -16,9 +16,9 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView userName;
-    Button loginButton;
-    TextView userPassword;
+    TextView mUserName;
+    Button mLoginButton;
+    TextView mUserPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +28,17 @@ public class LoginActivity extends AppCompatActivity {
         //check if someone already signed in
         if(ParseUser.getCurrentUser() != null) goToHome();
 
-        userName = findViewById(R.id.userName);
-        loginButton = findViewById(R.id.loginButton);
-        userPassword = findViewById(R.id.userPassword);
+        mUserName = findViewById(R.id.userName);
+        mLoginButton = findViewById(R.id.loginButton);
+        mUserPassword = findViewById(R.id.userPassword);
 
         //listen to click on button
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("button clicked");
-                String enteredName = userName.getText().toString();
-                String enteredPassword = userPassword.getText().toString();
+                String enteredName = mUserName.getText().toString();
+                String enteredPassword = mUserPassword.getText().toString();
 
                 authenticateUser(enteredName, enteredPassword);
             }
