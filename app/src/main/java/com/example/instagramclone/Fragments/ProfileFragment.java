@@ -47,13 +47,12 @@ public class ProfileFragment extends Fragment {
     TextView mUserName;
     TextView mUserName2;
     ImageView mUserPic;
+    Button mSaveNewPicBtn;
+    private File mPhotoFile;
     ProgressBar mProgressBar;
     ImageButton mChangePicButton;
     protected List<Post> mAllPosts;
     protected RecyclerView mRvPosts;
-    private File mPhotoFile;
-    ImageView mUploadedImage;
-    Button mSaveNewPicBtn;
     public String mPhotoFileName = "photo.jpg";
     protected UserProfileAdapter mUserProfileAdapter;
     private SwipeRefreshLayout mSwipeContainer;
