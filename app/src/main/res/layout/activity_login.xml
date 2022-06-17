@@ -174,4 +174,5 @@
             android:text="Sign Up"
             />
     </LinearLayout>
+
 </RelativeLayout>

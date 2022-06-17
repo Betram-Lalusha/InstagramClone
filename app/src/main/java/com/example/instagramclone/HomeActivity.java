@@ -61,30 +61,4 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.addPostButton) {
-            Intent intent = new Intent(this, PostActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        if (item.getItemId() == R.id.logoutButton) {
-            ParseUser.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 }

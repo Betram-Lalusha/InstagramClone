@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/font/.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.16168478260869565" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.29393115942028986" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29393115942028986" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.29257246376811596" />
         <entry key="app/src/main/res/layout/fragment_compose.xml" value="0.1765625" />

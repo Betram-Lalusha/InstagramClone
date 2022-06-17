@@ -29,6 +29,8 @@ import com.bumptech.glide.Glide;
 import com.example.instagramclone.Adapters.PostsAdapter;
 import com.example.instagramclone.Adapters.UserProfileAdapter;
 import com.example.instagramclone.EndlessRecyclerViewScrollListener;
+import com.example.instagramclone.HomeActivity;
+import com.example.instagramclone.LoginActivity;
 import com.example.instagramclone.Post;
 import com.example.instagramclone.R;
 import com.parse.FindCallback;
@@ -47,6 +49,7 @@ public class ProfileFragment extends Fragment {
     TextView mUserName;
     TextView mUserName2;
     ImageView mUserPic;
+    Button mLogOutButton;
     Button mSaveNewPicBtn;
     private File mPhotoFile;
     ProgressBar mProgressBar;
@@ -83,6 +86,7 @@ public class ProfileFragment extends Fragment {
         mUserPic = view.findViewById(R.id.profilePicture);
         mUserName = view.findViewById(R.id.nameOfUser);
         mUserName2 = view.findViewById(R.id.nameOfUser2);
+        mLogOutButton = view.findViewById(R.id.log0utButton);
         mChangePicButton = view.findViewById(R.id.changePicButton);
         mSaveNewPicBtn = view.findViewById(R.id.saveNewButton);
         mProgressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
@@ -137,6 +141,17 @@ public class ProfileFragment extends Fragment {
                 upDatePhoto(ParseUser.getCurrentUser(), mPhotoFile);
                 mProgressBar.setVisibility(ProgressBar.VISIBLE);
                 mSaveNewPicBtn.setVisibility(View.GONE);
+            }
+        });
+
+        mLogOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
