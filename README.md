@@ -17,7 +17,7 @@ The following **required** functionality is completed:
 - [X] User can take a photo, add a caption, and post it to "Instagram"
 - [X] User can view the last 20 posts submitted to "Instagram"
 - [X] User can pull to refresh the last 20 posts submitted to "Instagram"
-- [X] User can tap a post to go to a Post Details activity, which includes timestamp and caption.
+- [X] User can tap a post to go to a Post Details activity, which includes timestamp and caption. NOTE: I changed this to mimic instagram and instead show the timestamo and caption on the user's feed instead of going to a details view.
 
 The following **stretch** features are implemented:
 
