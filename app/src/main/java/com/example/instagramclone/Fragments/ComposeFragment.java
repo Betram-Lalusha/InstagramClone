@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ComposeFragment extends Fragment {
     Button mAddPicture;
     Button mSubmitButton;
     private File mPhotoFile;
+    ProgressBar mProgressBar;
     ImageView mUploadedImage;
     public String mPhotoFileName = "photo.jpg";
     public final String APP_TAG = "InstagramClone";
@@ -65,6 +67,7 @@ public class ComposeFragment extends Fragment {
         mAddPicture = view.findViewById(R.id.addPicture);
         mSubmitButton = view.findViewById(R.id.submitButton);
         mUploadedImage = view.findViewById(R.id.upLoadedPicture);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.pbLoading2);
 
         mAddPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +91,7 @@ public class ComposeFragment extends Fragment {
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
                 savePost(enteredCaption, currentUser, mPhotoFile);
             }
         });
@@ -133,6 +137,7 @@ public class ComposeFragment extends Fragment {
                 mCaption.setText("");
                 //clear image
                 mUploadedImage.setImageResource(0);
+                mProgressBar.setVisibility(ProgressBar.GONE);
                 Toast.makeText(getContext(), "saved successfully!.", Toast.LENGTH_SHORT).show();
 
             }

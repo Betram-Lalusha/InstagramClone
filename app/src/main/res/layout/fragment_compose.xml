@@ -21,6 +21,16 @@
         app:layout_constraintTop_toBottomOf="@+id/upLoadedPicture"
         tools:gravity="center" />
 
+    <ProgressBar
+        android:id="@+id/pbLoading2"
+        android:layout_width="230dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="212dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/upLoadedPicture"
         android:layout_width="415dp"
