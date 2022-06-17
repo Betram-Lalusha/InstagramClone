@@ -10,10 +10,10 @@
         android:id="@+id/ownerOfPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="248dp"
-        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="224dp"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="skysports news" />
@@ -60,7 +60,7 @@
     <ImageButton
         android:id="@+id/likeButton"
         android:layout_width="55dp"
-        android:layout_height="50dp"
+        android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:backgroundTint="@color/white"
@@ -69,20 +69,9 @@
         app:srcCompat="@drawable/icons8_heart_64" />
 
     <ImageButton
-        android:id="@+id/commentButton"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/likeButton"
-        app:layout_constraintTop_toBottomOf="@+id/postImage"
-        tools:srcCompat="@drawable/chat" />
-
-    <ImageButton
         android:id="@+id/shareButton"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
+        android:layout_width="52dp"
+        android:layout_height="54dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:backgroundTint="@color/white"
@@ -92,13 +81,13 @@
 
     <ImageButton
         android:id="@+id/saveButton"
-        android:layout_width="55dp"
-        android:layout_height="52dp"
+        android:layout_width="56dp"
+        android:layout_height="50dp"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintHorizontal_bias="0.774"
         app:layout_constraintStart_toEndOf="@+id/shareButton"
         app:layout_constraintTop_toBottomOf="@+id/postImage"
         app:srcCompat="@drawable/ufi_save" />
@@ -143,4 +132,16 @@
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/userNameAndCaption"
         app:layout_constraintTop_toBottomOf="@+id/shareButton" />
+
+    <ImageButton
+        android:id="@+id/commentButton"
+        android:layout_width="53dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/likeButton"
+        app:layout_constraintTop_toBottomOf="@+id/postImage"
+        app:srcCompat="@drawable/ufi_comment" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
